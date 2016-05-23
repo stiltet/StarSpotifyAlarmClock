@@ -66,14 +66,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="StarSpotifyAlarmClock.exe" size="12224">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="StarSpotifyAlarmClock.exe" size="16320">
       <assemblyIdentity name="StarSpotifyAlarmClock" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>OdXvTKQY14NfbSJ269RLx8hbRDCKvh7Y0LVY1QgMTLA=</dsig:DigestValue>
+        <dsig:DigestValue>wE1oQO8u+fD4KUx45uzQOlAydB2zRxNdHZUVoia95FA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -25,7 +25,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\ValidationFailedException.cs" />
     <Compile Include="Models\InputArguments.cs" />
+    <Compile Include="Models\MinutesToFadeInVolume.cs" />
     <Compile Include="Models\MilliSecondsToSleep.cs" />
     <Compile Include="Models\SpotifyUrl.cs" />
     <Compile Include="Program.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using StarSpotifyAlarmClock.Exceptions;
 
@@ -6,54 +7,44 @@ namespace StarSpotifyAlarmClock.Models
 {
     public class MilliSecondsToSleep
     {
-        private int _value;
-        private string _valueAsAString;
+        private TimeSpan _value;
 
         private readonly Regex _validationRegex =
-            new Regex(
-                "^(([1-9]|[1-2][0-9]|30))$");
+            new Regex(@"^(([0-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-3][0-5][0-9][0-9][0-9]|36000))$");
 
-        public int Value
+        public TimeSpan Value
         {
             get { return _value; }
-            set
-            {
-                _value = ValidateValue(value.ToString());
-                ValueAsAString = _value.ToString();
-            }
+            set { _value = ValidateValue(value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)); }
         }
 
         private string ValueAsAString
         {
-            set
-            {
-                _valueAsAString = ValidateValue(value).ToString();
-                _value = Convert.ToInt32(_valueAsAString);
-            }
+            set { _value = ValidateValue(value); }
         }
 
-        private int ValidateValue(string secondsToSleepAsString)
+        private TimeSpan ValidateValue(string millisecondsToSleepAsString)
         {
-            if (string.IsNullOrEmpty(secondsToSleepAsString))
-                return 5000;
+            if (string.IsNullOrEmpty(millisecondsToSleepAsString))
+                return new TimeSpan(0, 0, 0, 5, 0);
 
-            if (!_validationRegex.IsMatch(secondsToSleepAsString))
+            if (!_validationRegex.IsMatch(millisecondsToSleepAsString))
                 throw new ValidationFailedException(
-                    "Seconds to sleep must be an intriger with a value between 1 and 30.");
+                    "Milliseconds to sleep must be an integer with a value between 0 and 36000.");
 
-            var milliSecondsToSleep = Convert.ToInt32(secondsToSleepAsString)*1000;
+            var millisecondsToSleep = new TimeSpan(0, 0, 0, 0, Convert.ToInt32(millisecondsToSleepAsString));
 
-            return milliSecondsToSleep;
+            return millisecondsToSleep;
         }
 
-        public MilliSecondsToSleep(string secondsToSleepAsString)
+        public MilliSecondsToSleep(string millisecondsToSleepAsString)
         {
-            ValueAsAString = secondsToSleepAsString;
+            ValueAsAString = millisecondsToSleepAsString;
         }
 
-        public MilliSecondsToSleep(int secondsToSleep)
+        public MilliSecondsToSleep(TimeSpan millisecondsToSleep)
         {
-            Value = secondsToSleep;
+            Value = millisecondsToSleep;
         }
     }
 }

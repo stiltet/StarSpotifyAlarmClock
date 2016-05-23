@@ -13,9 +13,6 @@ C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\StarSpotif
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.exe
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.pdb
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\bin\Debug\StarSpotifyAlarmClock.exe.config
-C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.exe
-C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.pdb
-C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.csprojResolveAssemblyReference.cache
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\bin\Debug\StarSpotifyAlarmClock.exe.manifest
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\bin\Debug\StarSpotifyAlarmClock.application
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\bin\Debug\StarSpotifyAlarmClock.exe
@@ -26,3 +23,5 @@ C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\bin\Debug\SpotifyAPI.xml
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.exe.manifest
 C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.application
+C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.exe
+C:\Users\stli\Dropbox\#WebProjects\VisualStudio\StarSpotifyAlarmClock\SourceCode\StarSpotifyAlarmClock\obj\Debug\StarSpotifyAlarmClock.pdb
