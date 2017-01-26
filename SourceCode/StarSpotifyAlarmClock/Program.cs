@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using SpotifyAPI.Local;
+using StarSpotifyAlarmClock.Exceptions;
 using StarSpotifyAlarmClock.Models;
 
 namespace StarSpotifyAlarmClock
@@ -15,19 +16,20 @@ namespace StarSpotifyAlarmClock
         [DllImport("user32.dll")]
         private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 
+        // ReSharper disable once RedundantAssignment
         public static void Main(string[] arguments)
         {
-#if DEBUG
-            arguments = new[]
-            {
-                //"https://open.spotify.com/user/stiltet/playlist/7iGyN8pjT9D3vuoNuChHje",
-                //"https://open.spotify.com/track/6iA3KyiC4RxcwjlUnRrhjU",
-                //"https://open.spotify.com/album/7EUG9mn2FHSdfpGRrSYoyw",
-                //"https://open.spotify.com/artist/2FHOS0GkJv3EyT8a9BhP9E",
-                "https://play.spotify.com/user/stiltet/playlist/7iGyN8pjT9D3vuoNuChHje",
-                "30"
-            };
-#endif
+            #if DEBUG
+                arguments = new[]
+                {
+                    //"https://open.spotify.com/user/stiltet/playlist/7iGyN8pjT9D3vuoNuChHje",
+                    //"https://open.spotify.com/track/6iA3KyiC4RxcwjlUnRrhjU",
+                    //"https://open.spotify.com/album/7EUG9mn2FHSdfpGRrSYoyw",
+                    //"https://open.spotify.com/artist/2FHOS0GkJv3EyT8a9BhP9E",
+                    "https://play.spotify.com/user/stiltet/playlist/7iGyN8pjT9D3vuoNuChHje",
+                    "1"
+                };
+            #endif
 
             StartProgram(arguments);
         }
@@ -51,38 +53,49 @@ namespace StarSpotifyAlarmClock
             try
             {
                 if (!IsSpotifyInstalled())
-                    StartProgram(null, inputArguments, "Spotify isn't installed on this computer...", false);
+                    FailureHandling(inputArguments, "Spotify isn't installed on this computer...", false);
 
                 MuteComputerVolume();
 
-                StartSpotifyIfItsNotRunning();
+                StartSpotifyIfItsNotRunning(previousError != null);
 
                 var spotifyLocalApi = new SpotifyLocalAPI();
 
                 if (!spotifyLocalApi.Connect())
                     FailureHandling(inputArguments);
 
-                var spotifyStatus = spotifyLocalApi.GetStatus();
+                SpotifyAPI.Local.Models.StatusResponse spotifyStatus = null;
+                const int numberOfTries = 5;
+                var loopVariable = 0;
+
+                do
+                {
+                    spotifyStatus = spotifyLocalApi.GetStatus();
+                    loopVariable++;
+                } while (spotifyStatus == null && loopVariable < numberOfTries);
 
                 if (null == spotifyStatus || !spotifyStatus.Online)
-                    StartProgram(null, inputArguments, "You are not logged in to Spotify...", false);
+                    FailureHandling(inputArguments, "You are not logged in to Spotify...");
 
                 spotifyLocalApi.SetSpotifyVolume();
                 spotifyLocalApi.UnMute();
 
                 spotifyLocalApi.PlayURL(inputArguments.SpotifyUrl.Value);
 
-                var loopVariable =
-                    Math.Abs(inputArguments.MilliSecondsToSleep.Value.TotalMilliseconds) > 0
-                        ? 0
-                        : -5000;
-
-                while (loopVariable < 50)
+                while (Math.Abs(GetMasterVolume()) < 1)
                 {
                     System.Threading.Thread.Sleep(inputArguments.MilliSecondsToSleep.Value);
                     keybd_event((byte) Keys.VolumeUp, 0, 0, 0);
-                    loopVariable++;
                 }
+
+                #if DEBUG
+                    Console.WriteLine("    Press the escape key to exit...");
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape)
+                    {
+                        Console.WriteLine("    Press the escape key to exit...");
+                    }
+                    Environment.Exit(0);
+                #endif
             }
             catch (Exception exception)
             {
@@ -138,7 +151,7 @@ namespace StarSpotifyAlarmClock
 
         private static InputArguments ValidateInputAguments(IReadOnlyList<string> arguments)
         {
-            if (null == arguments || null == arguments.FirstOrDefault())
+            if (arguments?.FirstOrDefault() == null)
             {
                 ShowHelp();
                 Environment.Exit(0);
@@ -205,40 +218,87 @@ namespace StarSpotifyAlarmClock
 
         private static void MuteComputerVolume()
         {
-            var loopVariable = 0;
-
-            while (loopVariable < 5000)
+            while (Math.Abs(GetMasterVolume()) > 0)
             {
                 keybd_event((byte) Keys.VolumeDown, 0, 0, 0);
-                loopVariable++;
             }
         }
 
-        private static void StartSpotifyIfItsNotRunning()
+        //TODO: Refactor everything with master volume. Maybe remove unused nuget package.
+        public static float GetMasterVolume()
         {
-            if (SpotifyLocalAPI.IsSpotifyRunning())
-                return;
+            // get the speakers (1st render + multimedia) device
+            IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)(new MMDeviceEnumerator());
+            IMMDevice speakers;
+            const int eRender = 0;
+            const int eMultimedia = 1;
+            deviceEnumerator.GetDefaultAudioEndpoint(eRender, eMultimedia, out speakers);
 
-            SpotifyLocalAPI.RunSpotify();
-
-            System.Threading.Thread.Sleep(10000);
+            object o;
+            speakers.Activate(typeof(IAudioEndpointVolume).GUID, 0, IntPtr.Zero, out o);
+            IAudioEndpointVolume aepv = (IAudioEndpointVolume)o;
+            float volume = aepv.GetMasterVolumeLevelScalar();
+            Marshal.ReleaseComObject(aepv);
+            Marshal.ReleaseComObject(speakers);
+            Marshal.ReleaseComObject(deviceEnumerator);
+            return volume;
         }
 
-        private static void FailureHandling(InputArguments inputArguments, string exceptionMessage = null)
+        [ComImport]
+        [Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
+        private class MMDeviceEnumerator
+        {
+        }
+
+        [Guid("5CDF2C82-841E-4546-9722-0CF74078229A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IAudioEndpointVolume
+        {
+            void _VtblGap1_6();
+            float GetMasterVolumeLevelScalar();
+        }
+
+        [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IMMDeviceEnumerator
+        {
+            void _VtblGap1_1();
+
+            [PreserveSig]
+            int GetDefaultAudioEndpoint(int dataFlow, int role, out IMMDevice ppDevice);
+        }
+
+        [Guid("D666063F-1587-4E43-81F1-B948E807363F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IMMDevice
+        {
+            [PreserveSig]
+            int Activate([MarshalAs(UnmanagedType.LPStruct)] Guid iid, int dwClsCtx, IntPtr pActivationParams, [MarshalAs(UnmanagedType.IUnknown)] out object ppInterface);
+        }
+
+        private static void StartSpotifyIfItsNotRunning(bool extraSleepTime = false)
+        {
+            if (!SpotifyLocalAPI.IsSpotifyRunning())
+            {
+                SpotifyLocalAPI.RunSpotify();
+            }
+
+            System.Threading.Thread.Sleep(extraSleepTime ? 50000 : 10000);
+        }
+
+        private static void FailureHandling(InputArguments inputArguments, string exceptionMessage = null, bool restart = true)
         {
             try
             {
                 var processes = Process.GetProcessesByName("spotify");
+
                 foreach (var process in processes)
                 {
                     process.Kill();
                 }
 
-                throw new AccessViolationException("Couldn't connect to Spotify...");
+                throw new SpotifyException("Couldn't connect to Spotify...");
             }
             catch (Exception exception)
             {
-                StartProgram(null, inputArguments, exceptionMessage ?? exception.Message);
+                StartProgram(null, inputArguments, exceptionMessage ?? exception.Message, restart);
             }
         }
     }
