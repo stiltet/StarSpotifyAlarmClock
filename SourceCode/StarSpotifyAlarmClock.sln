@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3E9DFAA9-2CFB-401E-AA69-1AD87BB6C3F6}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,7 +10,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3E9DFA
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarSpotifyAlarmClock", "StarSpotifyAlarmClock\StarSpotifyAlarmClock.csproj", "{C3DA7175-3EF9-43CA-92A7-5CEC1DC0FE8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarSpotifyAlarmClock.ConsoleApp", "Projects\ConsoleApp\StarSpotifyAlarmClock.ConsoleApp\StarSpotifyAlarmClock.ConsoleApp.csproj", "{C3DA7175-3EF9-43CA-92A7-5CEC1DC0FE8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarSpotifyAlarmClock.Service", "Projects\Service\StarSpotifyAlarmClock.Service\StarSpotifyAlarmClock.Service.csproj", "{C4517930-1962-4887-A97B-6EE115059B2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{52576CBF-7171-4236-BE26-09F46085F2E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{B9D11E43-BF00-43E1-9D54-D74D5E645AD6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{AD026B3E-3F51-41BC-BAEC-08FACAC9A2FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarSpotifyAlarmClock.Domain", "Projects\Domain\StarSpotifyAlarmClock.Domain\StarSpotifyAlarmClock.Domain.csproj", "{6C70EC5C-83DB-413C-B9F6-B3F05C896706}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,8 +32,21 @@ Global
 		{C3DA7175-3EF9-43CA-92A7-5CEC1DC0FE8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3DA7175-3EF9-43CA-92A7-5CEC1DC0FE8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3DA7175-3EF9-43CA-92A7-5CEC1DC0FE8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4517930-1962-4887-A97B-6EE115059B2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4517930-1962-4887-A97B-6EE115059B2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4517930-1962-4887-A97B-6EE115059B2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4517930-1962-4887-A97B-6EE115059B2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C70EC5C-83DB-413C-B9F6-B3F05C896706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C70EC5C-83DB-413C-B9F6-B3F05C896706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C70EC5C-83DB-413C-B9F6-B3F05C896706}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C70EC5C-83DB-413C-B9F6-B3F05C896706}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C3DA7175-3EF9-43CA-92A7-5CEC1DC0FE8C} = {52576CBF-7171-4236-BE26-09F46085F2E0}
+		{C4517930-1962-4887-A97B-6EE115059B2E} = {B9D11E43-BF00-43E1-9D54-D74D5E645AD6}
+		{6C70EC5C-83DB-413C-B9F6-B3F05C896706} = {AD026B3E-3F51-41BC-BAEC-08FACAC9A2FF}
 	EndGlobalSection
 EndGlobal

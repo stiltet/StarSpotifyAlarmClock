@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StarSpotifyAlarmClock.Models
+namespace StarSpotifyAlarmClock.Service.Models
 {
     public class InputArguments
     {

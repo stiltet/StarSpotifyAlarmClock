@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StarSpotifyAlarmClock.Exceptions
+namespace StarSpotifyAlarmClock.Service.Exceptions
 {
     public class SpotifyException : Exception
     {

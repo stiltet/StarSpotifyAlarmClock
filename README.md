@@ -11,3 +11,20 @@ Just download the software from [here](https://sourceforge.net/projects/starspot
 I also recomend you to create a Windows scheduled task that runs the software at your desired wakeup time and with the arguments needed.
 
 [![Download Star Spotify Alarm Clock](https://img.shields.io/sourceforge/dt/starspotifyalarmclock.svg)](https://sourceforge.net/projects/starspotifyalarmclock/files/latest/download)
+
+### Release Notes
+
+#### v. 1.2.0.2
+
+* Fixed some stability and reliability issues. 
+* Updated dependencies.
+
+#### v. 1.1.0.0
+
+* Updated failure handling to check if Spotify is installed and that a user is logged in.
+* Improved exception handling. 
+* Switched to minutes to fade in system volume instead of seconds to sleep beteen increese of volume by 2. 
+
+#### v. 1.0.0.0
+
+First public release of the application.

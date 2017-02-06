@@ -2,20 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using Microsoft.Win32;
 using SpotifyAPI.Local;
-using StarSpotifyAlarmClock.Exceptions;
-using StarSpotifyAlarmClock.Models;
+using StarSpotifyAlarmClock.Service;
+using StarSpotifyAlarmClock.Service.Exceptions;
+using StarSpotifyAlarmClock.Service.Interfaces;
+using StarSpotifyAlarmClock.Service.Models;
+using StarSpotifyAlarmClock.Service.Services;
 
-namespace StarSpotifyAlarmClock
+namespace StarSpotifyAlarmClock.ConsoleApp
 {
     public class Program
     {
-        [DllImport("user32.dll")]
-        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
-
         // ReSharper disable once RedundantAssignment
         public static void Main(string[] arguments)
         {
@@ -55,7 +53,7 @@ namespace StarSpotifyAlarmClock
                 if (!IsSpotifyInstalled())
                     FailureHandling(inputArguments, "Spotify isn't installed on this computer...", false);
 
-                MuteComputerVolume();
+                VolumeService.MuteComputerVolume();
 
                 StartSpotifyIfItsNotRunning(previousError != null);
 
@@ -82,11 +80,7 @@ namespace StarSpotifyAlarmClock
 
                 spotifyLocalApi.PlayURL(inputArguments.SpotifyUrl.Value);
 
-                while (Math.Abs(GetMasterVolume()) < 1)
-                {
-                    System.Threading.Thread.Sleep(inputArguments.MilliSecondsToSleep.Value);
-                    keybd_event((byte) Keys.VolumeUp, 0, 0, 0);
-                }
+                VolumeService.IncreaseVolumeToMaxOverTime(inputArguments.MilliSecondsToSleep);
 
                 #if DEBUG
                     Console.WriteLine("    Press the escape key to exit...");
@@ -214,63 +208,6 @@ namespace StarSpotifyAlarmClock
         private static bool IsSpotifyInstalled()
         {
             return Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Spotify") != null;
-        }
-
-        private static void MuteComputerVolume()
-        {
-            while (Math.Abs(GetMasterVolume()) > 0)
-            {
-                keybd_event((byte) Keys.VolumeDown, 0, 0, 0);
-            }
-        }
-
-        //TODO: Refactor everything with master volume. Maybe remove unused nuget package.
-        public static float GetMasterVolume()
-        {
-            // get the speakers (1st render + multimedia) device
-            IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)(new MMDeviceEnumerator());
-            IMMDevice speakers;
-            const int eRender = 0;
-            const int eMultimedia = 1;
-            deviceEnumerator.GetDefaultAudioEndpoint(eRender, eMultimedia, out speakers);
-
-            object o;
-            speakers.Activate(typeof(IAudioEndpointVolume).GUID, 0, IntPtr.Zero, out o);
-            IAudioEndpointVolume aepv = (IAudioEndpointVolume)o;
-            float volume = aepv.GetMasterVolumeLevelScalar();
-            Marshal.ReleaseComObject(aepv);
-            Marshal.ReleaseComObject(speakers);
-            Marshal.ReleaseComObject(deviceEnumerator);
-            return volume;
-        }
-
-        [ComImport]
-        [Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
-        private class MMDeviceEnumerator
-        {
-        }
-
-        [Guid("5CDF2C82-841E-4546-9722-0CF74078229A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IAudioEndpointVolume
-        {
-            void _VtblGap1_6();
-            float GetMasterVolumeLevelScalar();
-        }
-
-        [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IMMDeviceEnumerator
-        {
-            void _VtblGap1_1();
-
-            [PreserveSig]
-            int GetDefaultAudioEndpoint(int dataFlow, int role, out IMMDevice ppDevice);
-        }
-
-        [Guid("D666063F-1587-4E43-81F1-B948E807363F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IMMDevice
-        {
-            [PreserveSig]
-            int Activate([MarshalAs(UnmanagedType.LPStruct)] Guid iid, int dwClsCtx, IntPtr pActivationParams, [MarshalAs(UnmanagedType.IUnknown)] out object ppInterface);
         }
 
         private static void StartSpotifyIfItsNotRunning(bool extraSleepTime = false)

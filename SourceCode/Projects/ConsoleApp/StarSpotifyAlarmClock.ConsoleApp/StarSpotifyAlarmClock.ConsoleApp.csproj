@@ -7,9 +7,9 @@
     <ProjectGuid>{C3DA7175-3EF9-43CA-92A7-5CEC1DC0FE8C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StarSpotifyAlarmClock</RootNamespace>
-    <AssemblyName>StarSpotifyAlarmClock</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>StarSpotifyAlarmClock.ConsoleApp</RootNamespace>
+    <AssemblyName>StarSpotifyAlarmClock.ConsoleApp</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -29,6 +29,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,7 +63,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>StarSpotifyAlarmClock.Program</StartupObject>
+    <StartupObject>StarSpotifyAlarmClock.ConsoleApp.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSCore, Version=1.1.5992.18249, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
@@ -87,12 +88,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\SpotifyException.cs" />
-    <Compile Include="Exceptions\ValidationFailedException.cs" />
-    <Compile Include="Models\InputArguments.cs" />
-    <Compile Include="Models\MinutesToFadeInVolume.cs" />
-    <Compile Include="Models\MilliSecondsToSleep.cs" />
-    <Compile Include="Models\SpotifyUrl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -116,6 +111,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Service\StarSpotifyAlarmClock.Service\StarSpotifyAlarmClock.Service.csproj">
+      <Project>{c4517930-1962-4887-a97b-6ee115059b2e}</Project>
+      <Name>StarSpotifyAlarmClock.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

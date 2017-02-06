@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using StarSpotifyAlarmClock.Exceptions;
+using StarSpotifyAlarmClock.Service.Exceptions;
 
-namespace StarSpotifyAlarmClock.Models
+namespace StarSpotifyAlarmClock.Service.Models
 {
     public class MilliSecondsToSleep
     {
