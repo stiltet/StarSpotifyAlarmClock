@@ -4,9 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Win32;
 using SpotifyAPI.Local;
-using StarSpotifyAlarmClock.Service;
 using StarSpotifyAlarmClock.Service.Exceptions;
-using StarSpotifyAlarmClock.Service.Interfaces;
 using StarSpotifyAlarmClock.Service.Models;
 using StarSpotifyAlarmClock.Service.Services;
 
@@ -62,7 +60,7 @@ namespace StarSpotifyAlarmClock.ConsoleApp
                 if (!spotifyLocalApi.Connect())
                     FailureHandling(inputArguments);
 
-                SpotifyAPI.Local.Models.StatusResponse spotifyStatus = null;
+                SpotifyAPI.Local.Models.StatusResponse spotifyStatus;
                 const int numberOfTries = 5;
                 var loopVariable = 0;
 
