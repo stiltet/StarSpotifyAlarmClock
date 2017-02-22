@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Win32;
 using SpotifyAPI.Local;
 using StarSpotifyAlarmClock.Service.Exceptions;
@@ -103,7 +104,7 @@ namespace StarSpotifyAlarmClock.ConsoleApp
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine(
-                "----------------------------------------------- Star Spotify Alarm Clock -----------------------------------------------");
+                $"----------------------------------------- Star Spotify Alarm Clock v. {Assembly.GetExecutingAssembly().GetName().Version} ------------------------------------------");
             Console.WriteLine("    Created by Stellan Lindell (https://github.com/stiltet/)");
             Console.WriteLine("    Both source code and software is open source and licenced under");
             Console.WriteLine(
