@@ -14,7 +14,13 @@ I also recomend you to create a Windows scheduled task that runs the software at
 
 ### Release Notes
 
-#### v. 1.2.0.2
+#### v. 1.2.2.0
+
+* Fixed a bug with the RegExp for SpotifyURL caused by only allowing small caps in usernames.
+* Added version number in header when starting application.
+* Done a lot of refactoring.
+
+#### v. 1.2.1.0
 
 * Fixed some stability and reliability issues. 
 * Updated dependencies.
