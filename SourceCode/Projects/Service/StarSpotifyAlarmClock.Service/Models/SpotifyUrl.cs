@@ -9,7 +9,7 @@ namespace StarSpotifyAlarmClock.Service.Models
 
         private readonly Regex _validationRegex =
             new Regex(
-                "^((https://)(open|play)(.spotify.com/)(user/[a-z]+/playlist/[a-zA-Z0-9]+|track/[a-zA-Z0-9]+|artist/[a-zA-Z0-9]+|album/[a-zA-Z0-9]+))$");
+                "^((https://)(open|play)(.spotify.com/)(user/[\\S]+/playlist/[a-zA-Z0-9]+|track/[a-zA-Z0-9]+|artist/[a-zA-Z0-9]+|album/[a-zA-Z0-9]+))$");
 
         public string Value
         {
