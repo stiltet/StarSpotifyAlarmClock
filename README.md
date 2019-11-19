@@ -33,4 +33,4 @@ I also recomend you to create a Windows scheduled task that runs the software at
 
 #### v. 1.0.0.0
 
-First public release of the application.
+* First public release of the application.
